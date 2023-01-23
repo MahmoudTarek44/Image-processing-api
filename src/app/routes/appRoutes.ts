@@ -4,10 +4,10 @@ import imageResize from "./subRoutes/imageRoutes";
 
 const appRoutes = express.Router();
 
-appRoutes.get('/', (req: Request, res: Response)=> {
-    res.send('App main routes')
-})
+appRoutes.get("/", (req: Request, res: Response) => {
+	res.send("App main routes");
+});
 
-appRoutes.use('/imageResize', imageResize)
+appRoutes.use("/imageResize", imageResize);
 
 export default appRoutes;
