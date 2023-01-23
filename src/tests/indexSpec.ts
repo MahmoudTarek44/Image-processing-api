@@ -2,22 +2,32 @@
 import path from "path";
 
 // Functions
-import { resizeImage, generateImagePath } from "../app/logic/imageProcessing";
+import {
+	resizeImage,
+	generateImagePath,
+	checkForExistingImage,
+} from "../app/logic/imageProcessing";
 
 describe("Resizing image process test", () => {
-	const currentPath = path.resolve("public/images/fiji.png");
-	const wrongPath = path.resolve("public/images/wrong.png");
-	const resultPath = path.resolve(generateImagePath("image", 200, 200, "jpg"));
+	const requestPath = path.resolve("src/public/fiji.png");
+	const wrongPath = path.resolve("src/public/wrong.png");
+	const resultPath = path.resolve(
+		generateImagePath("fiji", "200", "200", "jpg")
+	);
 
-	it("error if the wrong filename is provided", async () => {
+	it("Check for wrong file name", async () => {
 		await expectAsync(
-			resizeImage(resultPath, wrongPath, 400, 400)
+			resizeImage(resultPath, wrongPath, "400", "400")
 		).toBeRejected();
 	});
 
-	it("success if right extention filename, height and width parameters", async () => {
+	it("Check for existing image", async () => {
+		await expectAsync(checkForExistingImage(resultPath)).toBeResolved();
+	});
+
+	it("Check for processing the image correctly", async () => {
 		await expectAsync(
-			resizeImage(resultPath, currentPath, 400, 400)
+			resizeImage(requestPath, resultPath, "400", "400")
 		).toBeResolved();
 	});
 });

@@ -41,13 +41,38 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 // Modules
 var express_1 = __importDefault(require("express"));
+var path_1 = __importDefault(require("path"));
+// Functions
+var imageProcessing_1 = require("../../logic/imageProcessing");
 var imageResize = express_1.default.Router();
-imageResize.get('/', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, width, height, name;
-    return __generator(this, function (_b) {
-        _a = req.query, width = _a.width, height = _a.height, name = _a.name;
-        res.send('image route is accessed');
-        return [2 /*return*/];
+imageResize.get("/", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var name, width, height, resolvedRequestPath, generatedPath, resolvedGeneratedPath, error_1;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                name = req.query.name;
+                width = req.query.width;
+                height = req.query.height;
+                resolvedRequestPath = path_1.default.resolve("src/public/".concat(name, ".jpg"));
+                generatedPath = (0, imageProcessing_1.generateImagePath)(name, width, height, "jpg");
+                resolvedGeneratedPath = path_1.default.resolve(generatedPath);
+                if (!(0, imageProcessing_1.checkForExistingImage)(resolvedGeneratedPath)) return [3 /*break*/, 1];
+                res.sendFile(resolvedGeneratedPath);
+                return [3 /*break*/, 4];
+            case 1:
+                _a.trys.push([1, 3, , 4]);
+                return [4 /*yield*/, (0, imageProcessing_1.resizeImage)(resolvedRequestPath, resolvedGeneratedPath, width, height)];
+            case 2:
+                _a.sent();
+                res.sendFile(resolvedGeneratedPath);
+                return [3 /*break*/, 4];
+            case 3:
+                error_1 = _a.sent();
+                console.log("Something went wrong while processing the image");
+                res.send(error_1);
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
+        }
     });
 }); });
 exports.default = imageResize;

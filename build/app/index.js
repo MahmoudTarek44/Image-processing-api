@@ -8,7 +8,7 @@ var express_1 = __importDefault(require("express"));
 var appRoutes_1 = __importDefault(require("./routes/appRoutes"));
 var port = 4000;
 var app = (0, express_1.default)();
-app.use('/app', appRoutes_1.default);
+app.use("/app", appRoutes_1.default);
 app.listen(port, function () {
     console.log("Server is running on port ".concat(port, " ...."));
 });

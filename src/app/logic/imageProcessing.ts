@@ -1,30 +1,36 @@
 // Modules
 import sharp from "sharp";
+import fs from "fs";
 
-export const resizeImage = async (
-	resultPath: string,
-	currentPath: string,
-	width: number,
-	height: number
-) => {
-	try {
-		await sharp(currentPath)
-			.resize({
-				width: width,
-				height: height,
-			})
-			.toFile(resultPath);
-		return resultPath;
-	} catch (error) {
-		console.log("Error :", error);
-	}
+export const checkForExistingImage = (imagePath: string) => {
+	if (fs.existsSync(imagePath)) return true;
+	else return false;
 };
 
 export const generateImagePath = (
 	imageName: string,
-	width: number,
-	height: number,
+	width: string,
+	height: string,
 	fileExtension: string
 ): string => {
-	return `public/images/thumbs/${imageName}-${width}-${height}.${fileExtension}`;
+	return `src/public/thumbs/${imageName}_${width}_${height}.${fileExtension}`;
+};
+
+export const resizeImage = async (
+	requestPath: string,
+	generatedPath: string,
+	width: string,
+	height: string
+) => {
+	try {
+		const result = await sharp(requestPath)
+			.resize({
+				width: +width,
+				height: +height,
+			})
+			.toFile(generatedPath);
+		return result;
+	} catch (error) {
+		console.log("Error :", error);
+	}
 };

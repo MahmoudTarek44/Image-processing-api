@@ -1,35 +1,39 @@
 // Modules
 import express, { Request, Response, Router } from "express";
 import path from "path";
-import fs from "fs";
 
 // Functions
-import { resizeImage, generateImagePath } from "../../logic/imageProcessing";
+import {
+	resizeImage,
+	generateImagePath,
+	checkForExistingImage,
+} from "../../logic/imageProcessing";
 
 const imageResize: Router = express.Router();
 
 imageResize.get("/", async (req: Request, res: Response) => {
 	// extract query data:
 	const name: string = req.query.name as unknown as string;
-	const width: number = req.query.width as unknown as number;
-	const height: number = req.query.width as unknown as number;
+	const width: string = req.query.width as unknown as string;
+	const height: string = req.query.height as unknown as string;
 
 	// generate paths:
-	const resolvedRequestPath: string = path.resolve(`public/images/${name}.jpg`);
+	const resolvedRequestPath: string = path.resolve(`src/public/${name}.jpg`);
+
 	const generatedPath: string = generateImagePath(name, width, height, "jpg");
 	const resolvedGeneratedPath: string = path.resolve(generatedPath);
 
-	if (fs.existsSync(resolvedGeneratedPath)) {
-		res.sendFile("Image already exists: ", resolvedGeneratedPath);
+	if (checkForExistingImage(resolvedGeneratedPath)) {
+		res.sendFile(resolvedGeneratedPath);
 	} else {
 		try {
 			await resizeImage(
-				resolvedGeneratedPath,
 				resolvedRequestPath,
+				resolvedGeneratedPath,
 				width,
 				height
 			);
-			res.sendFile("Image resized: ", resolvedGeneratedPath);
+			res.sendFile(resolvedGeneratedPath);
 		} catch (error) {
 			console.log("Something went wrong while processing the image");
 			res.send(error);
