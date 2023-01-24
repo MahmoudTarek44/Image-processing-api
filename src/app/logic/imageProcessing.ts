@@ -2,8 +2,9 @@
 import sharp from "sharp";
 import fs from "fs";
 
-export const checkForExistingImage = (imagePath: string) => {
-	if (fs.existsSync(imagePath)) return true;
+export const checkForExistingImage = async (imagePath: string) => {
+	const found = await fs.existsSync(imagePath);
+	if (found) return true;
 	else return false;
 };
 
@@ -31,6 +32,7 @@ export const resizeImage = async (
 			.toFile(generatedPath);
 		return result;
 	} catch (error) {
-		console.log("Error :", error);
+		console.log("Error: ", error);
+		throw error;
 	}
 };

@@ -9,15 +9,13 @@ import {
 } from "../app/logic/imageProcessing";
 
 describe("Resizing image process test", () => {
-	const requestPath = path.resolve("src/public/fiji.png");
-	const wrongPath = path.resolve("src/public/wrong.png");
-	const resultPath = path.resolve(
-		generateImagePath("fiji", 200, 200, "jpg")
-	);
+	const requestPath = path.resolve("src/public/fiji.jpg");
+	const wrongPath = path.resolve("src/public/wrong.jpg");
+	const resultPath = path.resolve(generateImagePath("image", 200, 200, "jpg"));
 
 	it("Check for wrong file name", async () => {
 		await expectAsync(
-			resizeImage(resultPath, wrongPath, 400, 400)
+			resizeImage(wrongPath, resultPath, 400, 400)
 		).toBeRejected();
 	});
 

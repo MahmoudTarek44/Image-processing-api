@@ -43,12 +43,21 @@ exports.resizeImage = exports.generateImagePath = exports.checkForExistingImage 
 // Modules
 var sharp_1 = __importDefault(require("sharp"));
 var fs_1 = __importDefault(require("fs"));
-var checkForExistingImage = function (imagePath) {
-    if (fs_1.default.existsSync(imagePath))
-        return true;
-    else
-        return false;
-};
+var checkForExistingImage = function (imagePath) { return __awaiter(void 0, void 0, void 0, function () {
+    var found;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, fs_1.default.existsSync(imagePath)];
+            case 1:
+                found = _a.sent();
+                if (found)
+                    return [2 /*return*/, true];
+                else
+                    return [2 /*return*/, false];
+                return [2 /*return*/];
+        }
+    });
+}); };
 exports.checkForExistingImage = checkForExistingImage;
 var generateImagePath = function (imageName, width, height, fileExtension) {
     return "src/public/thumbs/".concat(imageName, "_").concat(width, "_").concat(height, ".").concat(fileExtension);
@@ -62,8 +71,8 @@ var resizeImage = function (requestPath, generatedPath, width, height) { return 
                 _a.trys.push([0, 2, , 3]);
                 return [4 /*yield*/, (0, sharp_1.default)(requestPath)
                         .resize({
-                        width: +width,
-                        height: +height,
+                        width: width,
+                        height: height,
                     })
                         .toFile(generatedPath)];
             case 1:
@@ -71,8 +80,8 @@ var resizeImage = function (requestPath, generatedPath, width, height) { return 
                 return [2 /*return*/, result];
             case 2:
                 error_1 = _a.sent();
-                console.log("Error :", error_1);
-                return [3 /*break*/, 3];
+                console.log("Error: ", error_1);
+                throw error_1;
             case 3: return [2 /*return*/];
         }
     });

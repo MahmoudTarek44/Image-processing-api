@@ -44,13 +44,13 @@ var path_1 = __importDefault(require("path"));
 // Functions
 var imageProcessing_1 = require("../app/logic/imageProcessing");
 describe("Resizing image process test", function () {
-    var requestPath = path_1.default.resolve("src/public/fiji.png");
-    var wrongPath = path_1.default.resolve("src/public/wrong.png");
-    var resultPath = path_1.default.resolve((0, imageProcessing_1.generateImagePath)("fiji", "200", "200", "jpg"));
+    var requestPath = path_1.default.resolve("src/public/fiji.jpg");
+    var wrongPath = path_1.default.resolve("src/public/wrong.jpg");
+    var resultPath = path_1.default.resolve((0, imageProcessing_1.generateImagePath)("image", 200, 200, "jpg"));
     it("Check for wrong file name", function () { return __awaiter(void 0, void 0, void 0, function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, expectAsync((0, imageProcessing_1.resizeImage)(resultPath, wrongPath, "400", "400")).toBeRejected()];
+                case 0: return [4 /*yield*/, expectAsync((0, imageProcessing_1.resizeImage)(wrongPath, resultPath, 400, 400)).toBeRejected()];
                 case 1:
                     _a.sent();
                     return [2 /*return*/];
@@ -70,7 +70,7 @@ describe("Resizing image process test", function () {
     it("Check for processing the image correctly", function () { return __awaiter(void 0, void 0, void 0, function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, expectAsync((0, imageProcessing_1.resizeImage)(requestPath, resultPath, "400", "400")).toBeResolved()];
+                case 0: return [4 /*yield*/, expectAsync((0, imageProcessing_1.resizeImage)(requestPath, resultPath, 400, 400)).toBeResolved()];
                 case 1:
                     _a.sent();
                     return [2 /*return*/];

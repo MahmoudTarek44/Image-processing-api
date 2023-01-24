@@ -18,20 +18,15 @@ imageResize.get("/", async (req: Request, res: Response) => {
 	const height: number = +(req.query.height as unknown as string);
 
 	// generate paths:
-	const resolvedRequestPath: string = path.resolve(`src/public/${name}.jpg`);
-
+	const resolvedRequestPath: string = path.resolve(
+		__dirname + `../../../../public/${name}.jpg`
+	);
 	const generatedPath: string = generateImagePath(name, width, height, "jpg");
 	const resolvedGeneratedPath: string = path.resolve(generatedPath);
 
 	if (isNaN(width) || isNaN(height)) {
 		res.status(400).send("Width and height must be numbers");
-	} else if (!checkForExistingImage(resolvedGeneratedPath)) {
-		res
-			.status(404)
-			.send(
-				"Image is not found, Please check the name of the image and try again!"
-			);
-	} else if (checkForExistingImage(resolvedGeneratedPath)) {
+	} else if (await checkForExistingImage(resolvedGeneratedPath)) {
 		res.sendFile(resolvedGeneratedPath);
 	} else {
 		try {

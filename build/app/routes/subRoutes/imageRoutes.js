@@ -51,27 +51,32 @@ imageResize.get("/", function (req, res) { return __awaiter(void 0, void 0, void
         switch (_a.label) {
             case 0:
                 name = req.query.name;
-                width = req.query.width;
-                height = req.query.height;
-                resolvedRequestPath = path_1.default.resolve("src/public/".concat(name, ".jpg"));
+                width = +req.query.width;
+                height = +req.query.height;
+                resolvedRequestPath = path_1.default.resolve(__dirname + "../../../../public/".concat(name, ".jpg"));
                 generatedPath = (0, imageProcessing_1.generateImagePath)(name, width, height, "jpg");
                 resolvedGeneratedPath = path_1.default.resolve(generatedPath);
-                if (!(0, imageProcessing_1.checkForExistingImage)(resolvedGeneratedPath)) return [3 /*break*/, 1];
-                res.sendFile(resolvedGeneratedPath);
-                return [3 /*break*/, 4];
-            case 1:
-                _a.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, (0, imageProcessing_1.resizeImage)(resolvedRequestPath, resolvedGeneratedPath, width, height)];
+                if (!(isNaN(width) || isNaN(height))) return [3 /*break*/, 1];
+                res.status(400).send("Width and height must be numbers");
+                return [3 /*break*/, 6];
+            case 1: return [4 /*yield*/, (0, imageProcessing_1.checkForExistingImage)(resolvedGeneratedPath)];
             case 2:
+                if (!_a.sent()) return [3 /*break*/, 3];
+                res.sendFile(resolvedGeneratedPath);
+                return [3 /*break*/, 6];
+            case 3:
+                _a.trys.push([3, 5, , 6]);
+                return [4 /*yield*/, (0, imageProcessing_1.resizeImage)(resolvedRequestPath, resolvedGeneratedPath, width, height)];
+            case 4:
                 _a.sent();
                 res.sendFile(resolvedGeneratedPath);
-                return [3 /*break*/, 4];
-            case 3:
+                return [3 /*break*/, 6];
+            case 5:
                 error_1 = _a.sent();
                 console.log("Something went wrong while processing the image");
                 res.send(error_1);
-                return [3 /*break*/, 4];
-            case 4: return [2 /*return*/];
+                return [3 /*break*/, 6];
+            case 6: return [2 /*return*/];
         }
     });
 }); });
