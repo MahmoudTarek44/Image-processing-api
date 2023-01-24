@@ -21,7 +21,7 @@
 1- Install necessary dependencies : npm install
 2- Run the app : npm run dev
 3- Use this URL to test the API : 
-   http://localhost:3000/api/images/resize?name=fiji&width=600&height=400
+   http://localhost:4000/app/imageResize?name=fiji&width=600&height=400
 
 
 #### The Technologies used:
